@@ -12,6 +12,39 @@ const createDOMElement = (virtualDOMElement) => {
   return element;
 };
 
+const virtualDOMDiff = (currentVirtualDOM, nextVirtualDOM, node) => {
+  const differences = [];
+  if (!currentVirtualDOM) {
+    // We need to create a full new node
+    differences.push({
+      type: "create-node",
+      vdom: nextVirtualDOM,
+      node,
+    });
+  }
+  return differences;
+};
+
+const updateDOM = (change) => {
+  switch (change.type) {
+    case "create-node":
+      change.node.appendChild(createDOMElement(change.vdom));
+      break;
+    case "remove-node":
+    case "replace-node":
+    case "change-prop":
+    case "remove-prop":
+    default:
+      break;
+  }
+};
+let currentVirtualDOM = null;
+
 export const render = (virtualDOM, node) => {
-  node.appendChild(createDOMElement(virtualDOM));
+  if (!currentVirtualDOM) {
+    node.innerHTML = "";
+  }
+  const changes = virtualDOMDiff(currentVirtualDOM, virtualDOM, node);
+  changes.forEach(updateDOM);
+  currentVirtualDOM = virtualDOM;
 };

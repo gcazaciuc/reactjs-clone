@@ -7,7 +7,7 @@ const virtualDOM = {
     {
       type: "div",
       props: { class: "child" },
-      children: [],
+      children: ["Hi"],
     },
   ],
 };
