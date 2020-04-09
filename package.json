@@ -1,0 +1,24 @@
+{
+  "name": "reactjs-clone",
+  "version": "1.0.0",
+  "description": "Rebuilding ReactJS for learning purposes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gcazaciuc/reactjs-clone.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gcazaciuc/reactjs-clone/issues"
+  },
+  "homepage": "https://github.com/gcazaciuc/reactjs-clone#readme",
+  "dependencies": {
+    "parcel": "^1.12.4"
+  }
+}
