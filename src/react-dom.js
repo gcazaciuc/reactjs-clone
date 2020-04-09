@@ -1,3 +1,5 @@
+import { virtualDOMDiff } from "./dom-reconciliation";
+
 const createDOMElement = (virtualDOMElement) => {
   if (typeof virtualDOMElement === "string") {
     return document.createTextNode(virtualDOMElement);
@@ -6,34 +8,32 @@ const createDOMElement = (virtualDOMElement) => {
   Object.keys(virtualDOMElement.props).forEach((attrName) => {
     element.setAttribute(attrName, virtualDOMElement.props[attrName]);
   });
-  virtualDOMElement.children.forEach((virtualDOMElem) => {
+  virtualDOMElement.props.children.forEach((virtualDOMElem) => {
     element.appendChild(createDOMElement(virtualDOMElem));
   });
   return element;
 };
 
-const virtualDOMDiff = (currentVirtualDOM, nextVirtualDOM, node) => {
-  const differences = [];
-  if (!currentVirtualDOM) {
-    // We need to create a full new node
-    differences.push({
-      type: "create-node",
-      vdom: nextVirtualDOM,
-      node,
-    });
-  }
-  return differences;
-};
-
 const updateDOM = (change) => {
   switch (change.type) {
     case "create-node":
-      change.node.appendChild(createDOMElement(change.vdom));
+      change.domContextNode.appendChild(createDOMElement(change.vdom));
       break;
     case "remove-node":
+      change.domContextNode.parentNode.removeChild(change.domContextNode);
+      break;
     case "replace-node":
+      change.domContextNode.parentNode.replaceChild(
+        createDOMElement(change.vdom),
+        change.domContextNode
+      );
+      break;
     case "change-prop":
+      change.domContextNode.setAttribute(change.prop, change.value);
+      break;
     case "remove-prop":
+      change.domContextNode.removeAttribute(change.prop);
+      break;
     default:
       break;
   }
