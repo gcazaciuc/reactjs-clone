@@ -19,6 +19,6 @@
   },
   "homepage": "https://github.com/gcazaciuc/reactjs-clone#readme",
   "dependencies": {
-    "parcel": "^1.12.4"
+    "parcel": "^2.8.2"
   }
 }
